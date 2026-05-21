@@ -1,0 +1,23 @@
+# =============================================================================
+#  queries/Employeequeries.toml
+# =============================================================================
+
+[employee]
+
+insert = """
+    INSERT INTO employees (name, photo, encoding)
+    VALUES ($1, $2, $3)
+    RETURNING *
+"""
+
+select_all = """
+    SELECT * FROM employees ORDER BY id
+"""
+
+select_all_name_id = """
+    SELECT id, name FROM employees ORDER BY name
+"""
+
+delete = """
+    DELETE FROM employees WHERE id=$1
+"""

@@ -1,0 +1,42 @@
+# =============================================================================
+#  queries/Leavequeries.toml
+# =============================================================================
+
+[leave]
+
+insert = """
+    INSERT INTO leave_requests
+        (employee_id, employee_name, leave_type, from_date, to_date, reason)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING *
+"""
+
+select_overlapping_by_employees = """
+    SELECT employee_id, from_date, to_date
+    FROM   leave_requests
+    WHERE  employee_id = ANY($1::int[])
+      AND  from_date   <= $2
+      AND  to_date     >= $3
+"""
+
+select_all = """
+    SELECT * FROM leave_requests ORDER BY created_at DESC
+"""
+
+select_by_employee = """
+    SELECT * FROM leave_requests
+    WHERE employee_id=$1
+    ORDER BY from_date DESC
+"""
+
+select_by_employee_date = """
+    SELECT * FROM leave_requests
+    WHERE employee_id = $1
+      AND from_date <= $2
+      AND to_date   >= $2
+    LIMIT 1
+"""
+
+delete = """
+    DELETE FROM leave_requests WHERE id=$1
+"""

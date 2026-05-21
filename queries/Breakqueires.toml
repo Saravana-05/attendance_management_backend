@@ -1,0 +1,30 @@
+# =============================================================================
+#  queries/Breakqueires.toml
+# =============================================================================
+
+[breaks]
+
+select_active_id = """
+    SELECT id FROM attendance_breaks
+    WHERE attendance_id=$1 AND break_end IS NULL
+"""
+
+select_all_by_attendance = """
+    SELECT * FROM attendance_breaks WHERE attendance_id=$1 ORDER BY id
+"""
+
+select_latest_active = """
+    SELECT * FROM attendance_breaks
+     WHERE attendance_id=$1 AND break_end IS NULL
+     ORDER BY id DESC
+     LIMIT 1
+"""
+
+insert = """
+    INSERT INTO attendance_breaks (attendance_id, break_start)
+    VALUES ($1, $2)
+"""
+
+update_end = """
+    UPDATE attendance_breaks SET break_end=$1 WHERE id=$2
+"""
